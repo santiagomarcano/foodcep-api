@@ -20,14 +20,17 @@ const setCookies = (response, session, credentials) => {
     });
     response.cookie('ROLE', credentials.role, {
         maxAge: 24 * 60 * 60 * 1000
-    })
+    });
+    response.cookie('LANGUAGE', credentials.language, {
+        maxAge: 24 * 60 * 60 * 1000
+    });
     return response;
 }
 
 // Login
 router.post('/', async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(email)
+    console.log(req.body)
     try {
         // Autheticate user and password
         const credentials = await auth.authenticate(email, password);
@@ -36,7 +39,7 @@ router.post('/', async (req, res, next) => {
         const storedSession = await auth.storeSession(session.id, credentials.user_id);
         // Setting cookies
         res = setCookies(res, session, credentials);
-        res.sendStatus(200);
+        res.status(200).send({ msg: 'User succesfully logged'});
     } catch(err) {
         res.sendStatus(422);
         return next('Invalid Credentials');

@@ -5,11 +5,19 @@ const queries = {
     INSERT_INGREDIENTS(ingredients, dish_id) {
         // Query string based on the number of items to insert
         const VALUES = ingredients.map((item) => {
-            return (`(${item.product_id}, ${dish_id}, ${item.gPP})`);
+            return (`(${item.product_id}, ${dish_id}, ${item.gPP}, ${item.pPP})`);
         })
         return `
-        INSERT INTO ingredients (product_id, dish_id, gPP)
+        INSERT INTO ingredients (product_id, dish_id, gPP, pPP)
         VALUES ${VALUES};
+        `
+    },
+
+    replaceDishPatch(column) {
+        return `
+            UPDATE dishes
+                SET ${column} = ?
+                    WHERE dish_id = ?;
         `
     },
 
@@ -22,7 +30,7 @@ const queries = {
     selectDish: `
     SELECT dish_id, name, category, cost
         FROM dishes
-            WHERE dish_id = ? AND restaurant_id = ?;
+            WHERE dish_id = ?;
     `,
     
     selectIngredients: `

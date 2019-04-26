@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../../../db');
+const pool = require('../../../../db');
 const jwt = require('jsonwebtoken');
 const queries = require('./queries');
 
-router.put('/modify', async (req, res, next) => {
-
+// Update restaurant
+router.put('/', async (req, res, next) => {
+    console.log(req.body)
     const { name, phone, adress, description } = req.body;
     const user = jwt.decode(req.cookies.TOKEN);
 
@@ -16,7 +17,7 @@ router.put('/modify', async (req, res, next) => {
     res.status(200).send(result);
     } catch(err) {
         res.sendStatus(400);
-        return next('Problems modifiying restaurant data');
+        return next('Problems updating restaurant data');
     }
 
 })

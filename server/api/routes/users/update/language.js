@@ -2,13 +2,13 @@ const router = require('express').Router();
 const pool = require('../../../../db');
 const queries = require('../queries');
 
-router.put('/modify', async (req, res, next) => {
+router.put('/update', async (req, res, next) => {
 
-    const { email, name } = req.body;
-
+    const { user_id, language } = req.body;
+    console.log(req.body)
     // Make changes
     try {
-        let user = await pool.query(queries.US_user_name, [email, name]);
+        let user = await pool.query(queries.US_user_language, [user_id, language]);
         // User object
         user = user[0][0];
         res.status(200).send(user);

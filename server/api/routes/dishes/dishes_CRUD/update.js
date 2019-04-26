@@ -1,20 +1,26 @@
 const router = require('express').Router();
 const pool = require('../../../../db');
 const queries = require('./queries');
-const jwt = require('jsonwebtoken');
 
 // 
 router.patch('/:id', async (req, res, next) => {
 
     const dish_id = req.params.id;
+
     try {
         const patch = await patchHandler(req.body, dish_id);
-        // Response with the updated dish
-        res.redirect(`/api/dishes/read/${req.params.id}`)
     } catch(err) {
         console.log(err);
-        res.sendStatus(400);
         return next(`Problems patching the dish`);
+    }
+
+    try {
+        const dishesResult = await pool.query(queries.selectDish, [req.params.id]);
+        res.status(200).send(dishesResult[0]);
+    } catch(err) {
+        console.log(err)
+        res.sendStatus(400);
+        return next(`Problems getting your dish`);
     }
     
 })

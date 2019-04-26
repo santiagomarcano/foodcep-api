@@ -3,7 +3,7 @@ const pool = require('../../../../db');
 const auth = require('../../../../authentication/utils/auth');
 const queries = require('../queries');
 
-router.put('/modify', async (req, res, next) => {
+router.put('/update', async (req, res, next) => {
 
     const { email, password, newEmail } = req.body;
 

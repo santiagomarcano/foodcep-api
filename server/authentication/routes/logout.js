@@ -6,8 +6,9 @@ const queries = require('./queries');
 const clearCookies = (response) => {
     response.clearCookie('TOKEN');
     response.clearCookie('ROLE');
+    response.clearCookie('SESSION_ID');
+    response.clearCookie('LANGUAGE');
     response.clearCookie('USER');
-    response.clearCookie('RESTAURANT_ID');
     return response;
 }
 
@@ -21,7 +22,7 @@ router.post('/', async (req, res, next) => {
         const result = await pool.query(queries.deleteSession, [session]);
         const revoke = await pool.query(queries.insertRevoked, [session])
         res = clearCookies(res);
-        res.sendStatus(200);
+        res.status(200).send({ msg: 'Logout successfull' });
     } catch(err) {
         res.sendStatus(404);
         return next('Invalid Credentials');

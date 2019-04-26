@@ -5,10 +5,10 @@ queries = {
     VALUES (?, ?, ?, ?, ?)
     `,
 
-    updateUser: `
-    UPDATE users
-    SET restaurant_id = ?, role = 'chef'
-    WHERE user_id = ?
+    selectRestaurant: `
+    SELECT name, phone, adress, description
+        FROM restaurants
+            WHERE restaurant_id = ?
     `,
 
     US_restaurant: `

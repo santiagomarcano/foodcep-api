@@ -19,22 +19,6 @@ router.get('/', async (req, res, next) => {
     
 })
 
-// Read one dish and return it without ingredients
-router.get('/:id', async (req, res, next) => {
-
-    const user = jwt.decode(req.cookies.TOKEN);
-
-    try {
-        const dishesResult = await pool.query(queries.selectDishes, [user.restaurant_id]);
-        res.status(200).send(dishesResult);
-    } catch(err) {
-        console.log(err)
-        res.sendStatus(400);
-        return next(`Problems getting your dishes`);
-    }
-    
-})
-
 // Read one dish and return it with ingredients
 router.get('/complete/:id', async (req, res, next) => {
 

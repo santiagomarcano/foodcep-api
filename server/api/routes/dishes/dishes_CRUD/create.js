@@ -8,6 +8,7 @@ router.post('/', async (req, res, next) => {
 
     const user = jwt.decode(req.cookies.TOKEN);
     const { name, category, cost, ingredients } = req.body;
+    console.log(req.body)
     try {
         // Insert dish row and return dish_id
         let dishResult = await pool.query(queries.IS_dish, [name, category, cost, user.restaurant_id]);
