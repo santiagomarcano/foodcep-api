@@ -17,6 +17,18 @@ const queries = {
                         WHERE order_items.order_id = ?;  
     `,
 
+    selectLastOrder: `
+    SELECT suppliers.name AS supplier, users.name AS madeBy, date
+    FROM orders
+        JOIN suppliers
+            ON suppliers.supplier_id = orders.supplier_id
+                JOIN users
+                    ON users.user_id = orders.user_id
+                WHERE orders.restaurant_id = ? AND orders.user_id IS NOT NULL
+                    ORDER BY orders.order_id DESC
+                        LIMIT 1;
+    `,
+
     // Stored Procedures
 
     IS_order: `

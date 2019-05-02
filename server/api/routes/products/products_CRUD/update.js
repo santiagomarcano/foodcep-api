@@ -22,18 +22,18 @@ router.put('/:id', async (req, res, next) => {
         res.sendStatus(400)
         return next(err.stack)
     }
-    await updateRelatedDishCost(req.params.id, cost, user.restaurant_id);
+    await updateRelatedDishCost(req.params.id, user.restaurant_id);
 })
 
-const updateRelatedDishCost = (product_id, cost, restaurant_id) => {
+const updateRelatedDishCost = (product_id, restaurant_id) => {
     return new Promise (async (resolve, reject) => {
-
+        console.log(product_id)
         try {
             const dishesToUpdate = await pool.query(queries.selectDishesToUpdate, [product_id, restaurant_id]);
-            dishesToUpdate.forEach(async (dish) => {
-                await pool.query(queries.U_dish_cost, [cost, dish.dish_id, product_id]);
-            })
             console.log(dishesToUpdate);
+            dishesToUpdate.forEach(async (dish) => {
+                await pool.query(queries.U_dish_cost, [dish.dish_id]);
+            })
             resolve('greay')
         } catch(err) {
             reject (err)
@@ -41,11 +41,6 @@ const updateRelatedDishCost = (product_id, cost, restaurant_id) => {
 
     })
 }
-
-// Tener el gPP de todos los ingredientes
-// Tener tener el costo nuevo y el id
-// Buscar todos los ingredientes que se relacionen con el restaurante y el product_id
-// products.cost * ingredients.gPP / 1000 para cada valor del ingrediente
 
 
 module.exports = router;

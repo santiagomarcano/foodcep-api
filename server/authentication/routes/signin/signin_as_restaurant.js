@@ -5,9 +5,11 @@ const pool = require('../../../db');
 const queries = require('../queries');
 const auth = require('../../utils/auth');
 const password_management = require('../../utils/password_management');
+const verification_code = require('../../utils/verification_code');
+
 
 // Sign in
-router.post('', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
     // Is this email already in use? 
     try {
         await auth.validateEmail(req.body.email);
@@ -16,18 +18,21 @@ router.post('', async (req, res, next) => {
         return next('Email repeated');
     }
 
-    let { email, password, name, restaurantName, phone, adress, description } = req.body;
+    let { email, password, name, restaurant_name, phone, adress, description, language } = req.body;
 
     try {
         // Generating random ID for the restaurant
         const restaurant_id = uuidv4();
         // Store restaurant
-        const restaurant = await createRestaurant(restaurant_id, restaurantName, phone, adress, description);
+        const restaurant = await createRestaurant(restaurant_id, restaurant_name, phone, adress, description);
         // Encrypt password
-        password = await password_management.gen_password(password);
-        const user = await pool.query(queries.insertUser, [email, name, password, 'chef', restaurant_id]);
-        res.sendStatus(201);
+        generated_password = await password_management.gen_password(password);
+        const user = await pool.query(queries.IS_user, [email, name, generated_password, 'chef', language, restaurant_id]);
+        // Generate the verification code and send the verification direction to user's email
+        const verify = await verification_code.createVerificationCode(user[0][0].user_id, email);
+        res.status(201).send({ msg: 'User and restaurant created' });
     } catch(err) {
+        console.log(err)
         res.sendStatus(500);
         return next('Problem saving the user')
     }
@@ -41,7 +46,6 @@ const createRestaurant = (restaurant_id, name, phone, adress, description) => {
             const result = await pool.query(queries.insertRestaurant, [restaurant_id, name, phone, adress, description]);
             return resolve(restaurant_id);
         } catch(err) {
-            console.log(err)
             return reject('Problems creating the restaurant');
         }
     })

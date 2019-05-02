@@ -48,10 +48,11 @@ router.post('/', async (req, res, next) => {
                     res = setCookies(res, session, user[0]);
                     res.sendStatus(200);
                 } catch(err) {
-                    res.sendStatus(422);
+                    res.sendStatus(403);
                     return next('Invalid Credentials');
                 }
             } else {
+                res.sendStatus(403);
                 return next('Nothing to refresh');
             }
         })

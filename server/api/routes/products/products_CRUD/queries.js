@@ -19,6 +19,15 @@ const queries = {
                   
     `,
 
+    selectAllProducts: `
+    SELECT products.product_id, products.name, categories.name AS category, products.loss, products.price, products.cost
+    FROM products
+        JOIN categories
+            ON products.category_id = categories.category_id
+                WHERE products.restaurant_id = ?
+                    ORDER BY products.name ASC
+    `,
+
     rowsCount: `
     SELECT COUNT(*) as count
         FROM products
@@ -57,7 +66,7 @@ const queries = {
     `,
 
     U_dish_cost: `
-    CALL U_dish_cost(?, ?, ?);
+    CALL U_dish_cost(?);
     `
     
 }

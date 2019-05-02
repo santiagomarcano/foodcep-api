@@ -25,9 +25,9 @@ router.get('/', async (req, res, next) => {
     const user = jwt.decode(req.cookies.TOKEN);
     const page = parseInt(req.query.page) * 5;
     const expression = req.query.product + '%';
-    console.log(user.restaurant_id);
 
     try {
+        console.log(info.messageId)
         const data = await pool.query(queries.selectProductsWithQuery, [user.restaurant_id, expression, page]);
         const rows = await pool.query(queries.rowsCount, [user.restaurant_id]);
         // Empty table
@@ -42,10 +42,14 @@ router.get('/', async (req, res, next) => {
         // Response queried products and total registred products related with the restaurant
         res.status(200).send({ data: data, count: rows[0].count });
     } catch(err) {
+        console.log(err)
         res.sendStatus(404);
         return next(`Product not found`);
     }
     
 })
+
+
+
 
 module.exports = router;

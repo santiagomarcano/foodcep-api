@@ -6,7 +6,7 @@ queries = {
     `,
 
     selectRestaurant: `
-    SELECT name, phone, adress, description
+    SELECT name AS restaurant_name, phone, adress, description
         FROM restaurants
             WHERE restaurant_id = ?
     `,

@@ -30,7 +30,7 @@ const queries = {
     selectAllProfiles: `
     SELECT user_id, email, name, role
     FROM users
-    WHERE restaurant_id = ?
+    WHERE restaurant_id = ? AND user_id != ?;
     `,
 
     // Stored Procedures
@@ -55,15 +55,21 @@ const queries = {
     CALL D_user(?, ?);
     `,
 
+    U_restaurant_user: `
+    CALL U_restaurant_user(?, ?, ?);
+    `,
+
     // Events 
 
     EVENT() {
         // Generate random name to the event
+        console.log('wepa')
         let event = crypto.randomBytes(20).toString('hex');
         return `
         CREATE EVENT ${event}
             ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
-                DO CALL D_invitations(?);
+                DO
+                    DELETE FROM invitation_links WHERE invitation_id = ?;
         `
     }
  

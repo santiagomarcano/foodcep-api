@@ -10,7 +10,7 @@ const clearCookies = (response) => {
     response.clearCookie('LANGUAGE');
     response.clearCookie('USER');
     return response;
-}
+};
 
 // Log out
 router.post('/', async (req, res, next) => {
@@ -20,7 +20,9 @@ router.post('/', async (req, res, next) => {
 
     try {
         const result = await pool.query(queries.deleteSession, [session]);
-        const revoke = await pool.query(queries.insertRevoked, [session])
+        if (result.affectedRows !== 0) {
+            const revoke = await pool.query(queries.insertRevoked, [session]);  
+        } 
         res = clearCookies(res);
         res.status(200).send({ msg: 'Logout successfull' });
     } catch(err) {
@@ -33,6 +35,6 @@ router.post('/', async (req, res, next) => {
         return next('Nothing to log out');
     }
     
-})
+});
 
 module.exports = router;

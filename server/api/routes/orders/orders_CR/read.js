@@ -3,6 +3,21 @@ const pool = require('../../../../db');
 const queries = require('./queries');
 const jwt = require('jsonwebtoken');
 
+// Read last order for home
+router.get('/last', async (req, res, next) => {
+    const user = jwt.decode(req.cookies.TOKEN);
+    console.log(user.restaurant_id)
+    try {
+        let order = await pool.query(queries.selectLastOrder, [user.restaurant_id]);
+        console.log(order)
+        order = order[0];
+        res.status(200).send(order);
+    } catch(err) {
+        res.sendStatus(400);
+        return next(`Problems reading your last order`)
+    }
+})
+
 // Read one full order with items
 router.get('/:id', async (req, res, next) => {
 

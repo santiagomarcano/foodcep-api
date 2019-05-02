@@ -44,3 +44,21 @@ exports.storeSession = (session_id, user_id) => {
         }
     })
 }
+
+exports.revokedList = () => {
+    return async (req, res, next) => {
+        try {
+            const result = await pool.query(queries.selectRevoked, [req.cookies.SESSION_ID])
+            if (result.length > 0) {
+                res.sendStatus(403)
+            } else {
+                console.log('Authorized')
+                next()
+            }
+        } catch(err) {
+            console.log(err)
+            res.sendStatus(500)
+        }
+
+    }
+}

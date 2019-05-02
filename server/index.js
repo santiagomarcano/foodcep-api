@@ -4,6 +4,7 @@ const app = express();
 const exjwt = require('express-jwt');
 const dependencies = require('./dependencies');
 const api = require('./api/api');
+const auth = require('../server/authentication/utils/auth');
 const authentication = require('./authentication/module');
 
 app.use(dependencies);
@@ -17,7 +18,19 @@ app.use(exjwt({
     }
 }).unless({path: ['/login', '/refresh', '/signin', '/logout']}));
 
-app.use('/api/', api);
+app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401);
+      }
+    next();
+});
+
+app.use((req, res, next) => {
+    app.use('/api/', auth.revokedList(), api);
+    next()
+})
+
+
 app.use(authentication);
 
 
