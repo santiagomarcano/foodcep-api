@@ -17,7 +17,7 @@ router.post('/:id', async (req, res, next) => {
         return next('Email repeated');
     }
 
-    let { email, password, name, language } = req.body;
+    let { email, password, name, language, currency } = req.body;
 
     try {
         // Is active invitation?
@@ -29,15 +29,14 @@ router.post('/:id', async (req, res, next) => {
             return next('Invalid invitation')
         }
         // Encrypt password
-        password = await password_management.gen_password(password);
-        const user = await pool.query(queries.IS_user, [email, name, password, invitationData.role, language, invitationData.restaurant_id]);
+        generatedPassword = await password_management.gen_password(password);
+        const user = await pool.query(queries.IS_user, [email, name, generatedPassword, invitationData.role, language, currency, invitationData.restaurant_id]);
         // Delete the invitation
         const deleteInvitaton = await pool.query(queries.D_invitation, [invitationData.invitation_id]);
         // Creates the code to verify the user's email
         const verify = await verification_code.createVerificationCode(user[0][0].user_id, email);
         res.status(201).send({ msg: 'User created' });
     } catch(err) {
-        console.log(err);
         res.sendStatus(500);
         return next('Problem saving the user')
     }

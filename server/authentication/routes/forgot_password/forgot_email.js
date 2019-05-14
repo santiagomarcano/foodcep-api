@@ -1,4 +1,4 @@
-const nodemailer_connection = require('../../nodemailer_pool');
+const nodemailer_connection = require('../../../nodemailer_pool');
 
 exports.sendEmail = (email, code) => {
     return new Promise(async (resolve, reject) => {
@@ -7,16 +7,16 @@ exports.sendEmail = (email, code) => {
             const send = nodemailer_connection.sendMail({
                 from: '"Foodcep" <hello@foodcep.com>',
                 to: email,
-                subject: "no-reply. Verifique su cuenta en Foodcep!",
+                subject: "no-reply. Cambie su contraseña en Foodcep",
                 html: 
-                `<h1>Bienvenido a Foodcep!</h1>
+                `<h1>Hola!</h1>
                 <br>
-                <p>Es necesaria la verificación de su email para poder utilizar Foodcep</p>
-                <p>Visite el siguiente link para verificar su email y empiece a utilizar su cuenta en Foodcep</p>
-                <a href="http://localhost:8080/verify?code=${code}" target="_blank">
-                    localhost:8080/verify?code=${code}
+                <p>Recibes este mensaje ya que has olvidado tu contraseña y necesitas recuperarla</p>
+                <p>Visite el siguiente link para modificar su contraseña</p>
+                <a href="http://localhost:4200/land/login/change?code=${code}" target="_blank">
+                    http://localhost:4200/land/login/change?code=${code}
                 </a>
-                <p>Este link expirará en 2 horas!</p>
+                <p>Este link expirará en 15 minutos!</p>
                 <br>
                 <small>Este mensaje va dirigido exclusivamente a su destinatario, pudiendo contener información confidencial o privilegiada. Si el receptor no fuera el destinatario, rogamos nos lo comunique cuanto antes. No está permitido realizar copias parciales o totales de su contenido ni su divulgación a persona diferente de su destinatario.
 

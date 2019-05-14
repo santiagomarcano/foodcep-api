@@ -22,6 +22,7 @@ router.post('/', async (req, res, next) => {
         res = login_cookies.setCookies(res, session, credentials);
         res.status(200).send({ verification: credentials.verification });
     } catch(err) {
+        console.log(err)
         res.sendStatus(422);
         return next('Invalid Credentials');
     }

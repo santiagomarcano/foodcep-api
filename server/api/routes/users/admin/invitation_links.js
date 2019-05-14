@@ -7,7 +7,6 @@ const uuidv4 = require('uuid/v4');
 router.post('/', async (req, res, next) => {
 
     let user = jwt.decode(req.cookies.TOKEN);
-    console.log(req.body);
     const invitation_id = uuidv4();
     try {
         // Insert invitation link into DB
@@ -17,7 +16,7 @@ router.post('/', async (req, res, next) => {
         res.status(200).send({ code: invitation_id});
     } catch(err) {
         console.log(err);
-        res.sendStatus(500);
+        res.sendStatus(400);
         return next(`Problems generating your invitation`);
     }
 

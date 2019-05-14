@@ -19,6 +19,21 @@ router.get('/', async (req, res, next) => {
     
 })
 
+router.get('/without-recipe', async (req, res, next) => {
+
+    const user = jwt.decode(req.cookies.TOKEN);
+
+    try {
+        const dishesResult = await pool.query(queries.selectDishesWithoutRecipe, [user.restaurant_id]);
+        res.status(200).send(dishesResult);
+    } catch(err) {
+        console.log(err)
+        res.sendStatus(400);
+        return next(`Problems getting your dishes`);
+    }
+    
+})
+
 // Read one dish and return it with ingredients
 router.get('/complete/:id', async (req, res, next) => {
 

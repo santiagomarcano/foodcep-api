@@ -59,21 +59,16 @@ router.delete('/delete/:id', async (req, res, next) => {
 
 const handleUpdatedUserSession = (user_id) => {
     return new Promise (async (resolve, reject) => {
-        console.log(user_id);
         try {
             const session = await pool.query(sessionQueries.selectSession, [user_id]);
-            console.log(session)
             // In case the user isn't logged
             if (session.length === 0) {
-                console.log('wepa')
                 return resolve('Nothing to handle');
             }
-            console.log(session)
             const result = await pool.query(sessionQueries.deleteSession, [session[0].session_id]);
             const revoke = await pool.query(sessionQueries.insertRevoked, [session[0].session_id]);
             return resolve('Session handeled correctly');
             } catch(err) {
-                console.log(err)
                 return reject('Problems handling the user session');
             }
     })

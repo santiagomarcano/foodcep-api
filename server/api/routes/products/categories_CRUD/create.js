@@ -8,6 +8,7 @@ router.post('/', async (req, res, next) => {
     
     const user = jwt.decode(req.cookies.TOKEN);
     const { name } = req.body;
+    console.log(name)
     try {
         let category = await pool.query(queries.IS_category, [name, user.restaurant_id]);
         category = category[0][0]

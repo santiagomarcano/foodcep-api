@@ -7,7 +7,8 @@ const pool = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    dateStrings: true
+    dateStrings: true,
+    charset: 'UTF8_GENERAL_CI'
 })
 
 pool.getConnection((err, connection) => {

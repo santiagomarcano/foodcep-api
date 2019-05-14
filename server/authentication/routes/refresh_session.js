@@ -34,25 +34,30 @@ router.post('/', async (req, res, next) => {
 
         jwt.verify(req.cookies.TOKEN, process.env.JWT_SECRET, async (err, decoded) => {
             if (err) {
+                //console.log(err)
                 try {
                     // Take the user based on the stored session
                     const user = await pool.query(queries.selectUserOnRefresh, req.cookies.SESSION_ID);
+                    if (user.length === 0) {
+                        throw new Error('Invalid session');
+                    }
                     // Sign new token and generates new session
                     const session = session_service.generateSession(user[0]);
                     // Update the stored session
                     const refreshSession = await pool.query(queries.updateSession, [session.id, req.cookies.SESSION_ID]);
                     // Throw error if there's no valid session
                     if (refreshSession.affectedRows === 0) {
-                        return next(err);
+                        throw new Error('Invalid session');
                     }
                     res = setCookies(res, session, user[0]);
-                    res.sendStatus(200);
+                    res.status(200).send({ msg: "OK" });
                 } catch(err) {
                     res.sendStatus(403);
                     return next('Invalid Credentials');
                 }
-            } else {
-                res.sendStatus(403);
+            }
+            if (decoded) {
+                res.sendStatus(406);
                 return next('Nothing to refresh');
             }
         })

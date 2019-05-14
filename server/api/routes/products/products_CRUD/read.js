@@ -27,7 +27,6 @@ router.get('/', async (req, res, next) => {
     const expression = req.query.product + '%';
 
     try {
-        console.log(info.messageId)
         const data = await pool.query(queries.selectProductsWithQuery, [user.restaurant_id, expression, page]);
         const rows = await pool.query(queries.rowsCount, [user.restaurant_id]);
         // Empty table

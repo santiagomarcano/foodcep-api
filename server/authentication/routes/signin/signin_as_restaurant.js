@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
         return next('Email repeated');
     }
 
-    let { email, password, name, restaurant_name, phone, adress, description, language } = req.body;
+    let { email, password, name, restaurant_name, phone, adress, description, language, currency } = req.body;
 
     try {
         // Generating random ID for the restaurant
@@ -27,7 +27,7 @@ router.post('/', async (req, res, next) => {
         const restaurant = await createRestaurant(restaurant_id, restaurant_name, phone, adress, description);
         // Encrypt password
         generated_password = await password_management.gen_password(password);
-        const user = await pool.query(queries.IS_user, [email, name, generated_password, 'chef', language, restaurant_id]);
+        const user = await pool.query(queries.IS_user, [email, name, generated_password, 'chef', language, currency, restaurant_id]);
         // Generate the verification code and send the verification direction to user's email
         const verify = await verification_code.createVerificationCode(user[0][0].user_id, email);
         res.status(201).send({ msg: 'User and restaurant created' });

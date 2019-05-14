@@ -14,6 +14,7 @@ exports.createVerificationCode = (user_id, email) => {
             // Creates an event to erase the code on 2h
             const event = await pool.query(queries.EVENT(), [code]);
             const sendEmail = await verification_email.sendEmail(email, code);
+            console.log(sendEmail)
             resolve('Verification created');
         } catch(err) {
             console.log(err)

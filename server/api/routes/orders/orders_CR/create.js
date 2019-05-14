@@ -8,7 +8,6 @@ router.post('/', async (req, res, next) => {
     
     const user = jwt.decode(req.cookies.TOKEN);
     const { supplier, items } = req.body;
-    console.log(req.body);
     try {
         // Insert order row and return order_id
         let orderResult = await pool.query(queries.IS_order, [supplier, user.user_id, user.restaurant_id]);
@@ -21,7 +20,6 @@ router.post('/', async (req, res, next) => {
         order = order[0][0];
         res.status(200).send(order);
     } catch(err) {
-        console.log(err);
         res.sendStatus(400);
         return next(`Problems creating your order`);
     }

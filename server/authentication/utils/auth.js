@@ -1,6 +1,9 @@
+const fs = require('fs');
+const pub_key = fs.readFileSync('server/rsa-keys/token_key.pub', 'utf8')
 const queries = require('../routes/queries');
 const pool = require('../../db');
 const password_management = require('./password_management');
+const jwt = require('jsonwebtoken');
 
 // Checks for authenticity of credentials
 exports.authenticate = (email, password) => {
@@ -52,13 +55,41 @@ exports.revokedList = () => {
             if (result.length > 0) {
                 res.sendStatus(403)
             } else {
-                console.log('Authorized')
                 next()
             }
         } catch(err) {
-            console.log(err)
             res.sendStatus(500)
         }
 
+    }
+}
+
+exports.permission = () => {
+    return (req, res, next) => {
+        const token = jwt.verify(req.cookies.TOKEN, pub_key, { algorithms: ['RS256'] }, async (err, decoded) => {  
+            if (decoded && decoded.role === 'cook') {
+                res.status(403).send(true);
+                return next('No permissions to be here')
+            }
+            if (err) {
+                res.sendStatus(401);
+            }
+        next();
+        });
+    }
+}
+
+exports.chefPermission = () => {
+    return (req, res, next) => {
+        const token = jwt.verify(req.cookies.TOKEN, pub_key, { algorithms: ['RS256'] }, async (err, decoded) => {
+            if (decoded && decoded.role !== 'chef') {
+                res.status(403).send(true);
+                return next('No permissions to be here')
+            }
+            if (err) {
+                res.sendStatus(401);
+            }
+        next();
+        });
     }
 }

@@ -41,6 +41,21 @@ const queries = {
                     WHERE ingredients.dish_id = ?;
     `, 
 
+    selectIngredientsForRecipe: `
+    SELECT products.name, ingredients.gPP
+        FROM ingredients
+            JOIN products
+                ON ingredients.product_id = products.product_id
+                    WHERE ingredients.dish_id = ?;
+    `,
+
+    selectDishesWithoutRecipe: `
+    SELECT dishes.dish_id, dishes.name FROM dishes
+    LEFT JOIN recipes
+        ON dishes.dish_id = recipes.dish_id
+            WHERE recipes.dish_id IS NULL AND dishes.restaurant_id = ?;
+    `,
+
     addPatch: `
         INSERT INTO ingredients (product_id, dish_id, gPP)
             VALUES (?, ?, ?);

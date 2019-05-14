@@ -3,7 +3,7 @@ var crypto = require("crypto");
 const queries = {
 
     selectUserBasedOnSessionID: `
-    SELECT sessions.user_id, users.email, users.name, users.language, users.restaurant_id
+    SELECT sessions.user_id, users.email, users.name, users.language, users.currency, users.restaurant_id
     FROM sessions
         JOIN users
             ON sessions.user_id = users.user_id
@@ -12,8 +12,13 @@ const queries = {
 
     selectUser: `
     SELECT restaurant_id
-    FROM users
-    WHERE user_id = ?
+        FROM users
+            WHERE user_id = ?
+    `,
+
+    selectCurrencies: `
+    SELECT symbol
+        FROM currencies;
     `,
 
     updatePassword: `
@@ -51,6 +56,10 @@ const queries = {
     CALL US_user_language(?, ?);
     `,
 
+    US_user_currency: `
+    CALL US_user_currency(?, ?);
+    `,
+
     D_user: `
     CALL D_user(?, ?);
     `,
@@ -59,15 +68,18 @@ const queries = {
     CALL U_restaurant_user(?, ?, ?);
     `,
 
+    selectStats: `
+    CALL S_stats(?)
+    `,
+
     // Events 
 
     EVENT() {
         // Generate random name to the event
-        console.log('wepa')
-        let event = crypto.randomBytes(20).toString('hex');
+        let event = crypto.randomBytes(10).toString('hex');
         return `
         CREATE EVENT ${event}
-            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 24 HOUR
                 DO
                     DELETE FROM invitation_links WHERE invitation_id = ?;
         `

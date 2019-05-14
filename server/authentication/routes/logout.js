@@ -9,6 +9,7 @@ const clearCookies = (response) => {
     response.clearCookie('SESSION_ID');
     response.clearCookie('LANGUAGE');
     response.clearCookie('USER');
+    response.clearCookie('CURRENCY');
     return response;
 };
 

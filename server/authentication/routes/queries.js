@@ -38,7 +38,7 @@ const queries = {
     `,
 
     selectUserOnRefresh: `
-    SELECT users.name, users.role, users.restaurant_id
+    SELECT users.name, users.role, users.restaurant_id, users.user_id
     FROM sessions
         JOIN users
             ON sessions.user_id = users.user_id
@@ -98,7 +98,7 @@ const queries = {
     `,
 
     IS_user: `
-    CALL IS_user (?, ?, ?, ?, ?, ?);
+    CALL IS_user (?, ?, ?, ?, ?, ?, ?);
     `,
 
     // Events 
@@ -107,7 +107,7 @@ const queries = {
         let event = crypto.randomBytes(20).toString('hex');
         return `
         CREATE EVENT ${event}
-            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 MINUTE
+            ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 15 MINUTE
                 DO 
                     DELETE FROM verifications
                         WHERE code = ?;
