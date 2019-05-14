@@ -12,7 +12,7 @@ router.post('/verify', async (req, res, next) => {
         res.status(403).send({ "success": false, "msg": "Captcha failed" });
     }
 
-    const secretKey = '6LdjYaMUAAAAAG5QX6iaMKEUrFVm9eAHkO6EE5IJ';
+    const secretKey = process.env.RECAPTCHA_KEY;
     const verifyUrl = `
     https://google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}&remoteip=${req.connection.remoteAddress}
     `
