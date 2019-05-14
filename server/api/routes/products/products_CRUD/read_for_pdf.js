@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 // Products list for PDF rendering
 router.get('/', async (req, res, next) => {
-    console.log('kinki')
+    
         const user = jwt.decode(req.cookies.TOKEN);
     
         try {

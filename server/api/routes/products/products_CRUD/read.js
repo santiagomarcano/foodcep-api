@@ -41,7 +41,6 @@ router.get('/', async (req, res, next) => {
         // Response queried products and total registred products related with the restaurant
         res.status(200).send({ data: data, count: rows[0].count });
     } catch(err) {
-        console.log(err)
         res.sendStatus(404);
         return next(`Product not found`);
     }

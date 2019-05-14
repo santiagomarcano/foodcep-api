@@ -27,14 +27,12 @@ router.put('/:id', async (req, res, next) => {
 
 const updateRelatedDishCost = (product_id, restaurant_id) => {
     return new Promise (async (resolve, reject) => {
-        console.log(product_id)
         try {
             const dishesToUpdate = await pool.query(queries.selectDishesToUpdate, [product_id, restaurant_id]);
-            console.log(dishesToUpdate);
             dishesToUpdate.forEach(async (dish) => {
                 await pool.query(queries.U_dish_cost, [dish.dish_id]);
             })
-            resolve('greay')
+            resolve('Updated')
         } catch(err) {
             reject (err)
         }

@@ -5,7 +5,7 @@ const queries = require('../queries');
 router.put('/update', async (req, res, next) => {
 
     const { user_id, language } = req.body;
-    console.log(req.body)
+    
     // Make changes
     try {
         let user = await pool.query(queries.US_user_language, [user_id, language]);
