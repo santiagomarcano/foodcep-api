@@ -14,7 +14,7 @@ exports.generateSession = (credentials) => {
     }
     const token = jwt.sign(payload, private_key, {
         algorithm: 'RS256',
-        expiresIn: '30m'
+        expiresIn: '5000'
     })
     // Generate random SESSION_ID
     return { token: token, id: session }

@@ -25,13 +25,13 @@ const queries = {
         JOIN categories
             ON products.category_id = categories.category_id
                 WHERE products.restaurant_id = ?
-                    ORDER BY products.name ASC
+                    ORDER BY products.name ASC;
     `,
 
     rowsCount: `
     SELECT COUNT(*) as count
         FROM products
-         WHERE restaurant_id = ?
+         WHERE restaurant_id = ? AND category_id IS NOT NULL;
     `,
 
     selectCategory: `

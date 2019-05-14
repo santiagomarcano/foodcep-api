@@ -38,7 +38,6 @@ app.use(exjwt({
 
 app.use(async function (err, req, res, next) {
     if (err.name === 'UnauthorizedError' || err.name === 'TokenExpiredError') {
-        console.log(err)
         res.sendStatus(401);
     } 
 });
