@@ -9,7 +9,7 @@ const cors = require('cors');
 dependencies.use(cookieParser())
 dependencies.use(bodyParser.json());
 dependencies.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors({
+dependencies.use(cors({
     origin: 'http://localhost',
     credentials: true
 }));

@@ -25,7 +25,7 @@ app.use(exjwt({
     '/login',
     '/refresh',
     '/signin/restaurant',
-    '/signin/',
+    /^\/signin/,,
     '/logout',
     '/currencies',
     '/captcha/verify',
