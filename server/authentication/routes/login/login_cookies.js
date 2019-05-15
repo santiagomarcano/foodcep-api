@@ -4,11 +4,12 @@ exports.setCookies = (response, session, credentials) => {
         maxAge: 24 * 60 * 60 * 1000,
         withCredentials: true,
         httpOnly: true,
-        //secure: true
+        secure: true
     });
     response.cookie('SESSION_ID', session.id, {
         maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true
+        httpOnly: true,
+        secure: true
     });
     response.cookie('USER', credentials.name, {
         maxAge: 24 * 60 * 60 * 1000
@@ -30,11 +31,12 @@ exports.refreshCookies = (response, cookies) => {
         maxAge: 24 * 60 * 60 * 1000,
         withCredentials: true,
         httpOnly: true,
-        //secure: true
+        secure: true
     });
     response.cookie('SESSION_ID', cookies.SESSION_ID, {
         maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true
+        httpOnly: true,
+        secure: true
     });
     response.cookie('USER', cookies.USER, {
         maxAge: 24 * 60 * 60 * 1000

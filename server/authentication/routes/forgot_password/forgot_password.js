@@ -23,7 +23,6 @@ router.get('/', async (req, res, next) => {
         const sendEmail = await forgot_email.sendEmail(email, code);
         res.status(200).send({ msg: 'Forgot code sended'});
     } catch(err) {
-        console.log(err)
         res.sendStatus(404);
         return next(`User with email ${email} not found`);
     }
@@ -33,7 +32,7 @@ router.get('/', async (req, res, next) => {
 router.post('/update', async (req, res, next) => {
 
     const { code, newPassword } = req.body;
-    console.log(code)
+
     try {
         // Encrypt new password
         const forgotCode = await pool.query(queries.DS_forgot_code, [code])
@@ -41,7 +40,6 @@ router.post('/update', async (req, res, next) => {
             res.status(404).send({ msg: 'Code not found'});
         }
         const encrypt = await password_management.gen_password(newPassword);
-        console.log(forgotCode)
         let user = await pool.query(queries.updatePassword, [encrypt, forgotCode[0][0].user_id])
         res.status(200).send({ msg: 'Password changed!'})
     } catch(err) {

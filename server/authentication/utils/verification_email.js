@@ -13,10 +13,10 @@ exports.sendEmail = (email, code) => {
                 <br>
                 <p>Es necesaria la verificación de su email para poder utilizar Foodcep</p>
                 <p>Visite el siguiente link para verificar su email y empiece a utilizar su cuenta en Foodcep</p>
-                <a href="http://localhost:8080/verify?code=${code}" target="_blank">
-                    localhost:8080/verify?code=${code}
+                <a href="https://foodcep.com/verify?code=${code}" target="_blank">
+                    foodcep.com/verify?code=${code}
                 </a>
-                <p>Este link expirará en 2 horas!</p>
+                <p>Este link expirará en 15 minutos!</p>
                 <br>
                 <small>Este mensaje va dirigido exclusivamente a su destinatario, pudiendo contener información confidencial o privilegiada. Si el receptor no fuera el destinatario, rogamos nos lo comunique cuanto antes. No está permitido realizar copias parciales o totales de su contenido ni su divulgación a persona diferente de su destinatario.
 

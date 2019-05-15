@@ -13,8 +13,8 @@ exports.sendEmail = (email, code) => {
                 <br>
                 <p>Recibes este mensaje ya que has olvidado tu contraseña y necesitas recuperarla</p>
                 <p>Visite el siguiente link para modificar su contraseña</p>
-                <a href="http://localhost:4200/land/login/change?code=${code}" target="_blank">
-                    http://localhost:4200/land/login/change?code=${code}
+                <a href="https://foodcep.com/land/login/change?code=${code}" target="_blank">
+                    https://foodcep.com/land/login/change?code=${code}
                 </a>
                 <p>Este link expirará en 15 minutos!</p>
                 <br>
